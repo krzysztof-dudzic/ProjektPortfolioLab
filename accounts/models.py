@@ -128,13 +128,18 @@ class UserManager(BaseUserManager):
 
         if not password:
             raise ValueError("Users must have a password!!! ")
+
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        extra_fields.setdefault('is_active', True)
+
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(self, email, password, **extra_fields):
 
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
@@ -151,7 +156,7 @@ class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), max_length=255, unique=True)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [] # Email & Password are required by default.
+    REQUIRED_FIELDS = []
     objects = UserManager()
 
     def __str__(self):

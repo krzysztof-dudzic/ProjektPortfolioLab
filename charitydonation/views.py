@@ -5,6 +5,9 @@ from .models import Donation, Institution
 from django.contrib.auth import login, logout, authenticate, views
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.generic.edit import CreateView
+
 
 
 class LandingPage(View):
@@ -21,28 +24,16 @@ class LandingPage(View):
                                               'all_institution_lok': all_institution_lok})
 
 
-class AddDonation(View):
+class AddDonation(LoginRequiredMixin, View):
+    login_url = '/'
+    # raise_exception = True
     def get(self, request):
+
+        # redirect_field_name = 'landing-page'
         return render(request, 'form.html')
 
 
-# class Login(View):
-#     def get(self, request):
-#         form = LoginForm()
-#         return render(request, 'login.html', {'form': form})
-#
-#     def post(self, request, *args, **kwargs):
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             user = authenticate(email=form.cleaned_data['email'], password=form.cleaned_data['password'])
-#             if user is not None:
-#                 login(request, user)
-#                 return redirect('landing-page')
-#                 # return HttpResponse("Jest ok")
-#             else:
-#                 return render(request, 'login.html', {'form': form})
-#         else:
-#             return render(request, 'login.html', {'form': form})
+
 
 # class LoginView(views.LoginView):
 #     form_class = LoginForm
@@ -55,19 +46,4 @@ class AddDonation(View):
 #     success_url = reverse_lazy('login')
 
 
-# class Register(View):
-#     def get(self, request):
-#         form = CreateUserForm()
-#         return render(request, 'register.html', {'form': form})
-#
-#     def post(self, request):
-#         form = CreateUserForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             email = form.cleaned_data.get('email')
-#             raw_password = form.cleaned_data.get('password')
-#             user = authenticate(email=email, password=raw_password)
-#             user.save()
-#             login(request, user)
-#             return redirect('landing-page')
-#         return render(request, 'register.html', {'form': form})
+

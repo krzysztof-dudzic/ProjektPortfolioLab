@@ -88,8 +88,18 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 #         # This is done here, rather than on the field, because the
 #         # field does not have access to the initial value
 #         return self.initial["password"]
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
+
+
+
+
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import CustomUser
+from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 from .models import CustomUser
 
 
@@ -105,3 +115,30 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ('email',)
+
+
+class LoginForm(forms.Form):
+
+    email = forms.CharField(max_length=64, label="Email")
+    password = forms.CharField(widget=forms.PasswordInput, label='Hasło')
+
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'password']
+
+
+class CreateUserForm(forms.ModelForm):
+
+    password = forms.CharField(max_length=16, label="Hasło", widget=forms.PasswordInput)
+    password2 = forms.CharField(max_length=16, label="Powtórz hasło", widget=forms.PasswordInput)
+
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'password', 'password2']
+
+    def clean(self):
+        clean_data = super().clean()
+        pas1 = clean_data['password']
+        pas2 = clean_data['password2']
+        if pas1 != pas2:
+            raise ValidationError('Passwords are incorrect')
