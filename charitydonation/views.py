@@ -11,18 +11,22 @@ from django.db.models import Avg, Count
 from django.core.paginator import Paginator
 from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 from django.http import HttpResponse
+from django.db.models import Q, Sum
 
 
 class LandingPage(View):
     def get(self, request):
-        count_bags = Donation.objects.filter(quantity__gt=0).count()
-        count_institutions = Donation.objects.filter(institution__gt=0).count()
+        count_bags = Donation.objects.all()
+        count_b = count_bags.aggregate(Sum('quantity'))['quantity__sum']
+        count_institutions = Donation.objects.distinct("institution").count()
+
+
         #
         all_institution_fund = Institution.objects.filter(type='1')
         all_institution_org = Institution.objects.filter(type='2')
         all_institution_lok = Institution.objects.filter(type='3')
 
-        return render(request, 'index.html', {'count_bags': count_bags, 'count_institutions': count_institutions,
+        return render(request, 'index.html', {'count_b': count_b, 'count_institutions': count_institutions,
                                               'all_institution_fund': all_institution_fund,
                                               'all_institution_org': all_institution_org,
                                               'all_institution_lok': all_institution_lok}
@@ -73,8 +77,8 @@ class AddDonation(LoginRequiredMixin, View):
             donat.save()
         # redirect_field_name = 'landing-page'
             return render(request, 'form-confirmation.html', {'form': form})
-        else:
-            return render(request, 'form.html', {'form': form})
+
+        return render(request, 'form.html', {'form': form})
             # return HttpResponse("Źle")
 # class LoginView(views.LoginView):
 #     form_class = LoginForm
@@ -102,3 +106,8 @@ class PasswordChangeView(PasswordChangeView):
 
 class PasswordChangeDoneView(PasswordChangeDoneView):
     template_name = 'change-password-done.html'
+
+
+class DonationReady(View):
+    def get(self, request):
+        return render(request, 'form-confirmation.html')

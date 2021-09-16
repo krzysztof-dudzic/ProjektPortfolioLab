@@ -243,12 +243,6 @@ document.addEventListener("DOMContentLoaded", function() {
       // TODO: get data from inputs and show them in summary
     }
 
-
-
-
-
-
-
     /**
      * Submit form
      *
@@ -309,43 +303,69 @@ document.addEventListener("DOMContentLoaded", function() {
 //   })
 //   }
 
+const form = document.querySelector("#myform");
 
-const formData = new FormData();
-const category = document.querySelector('input[name=categories]');
-const bags = document.querySelector('input[name=bags]');
-const organization = document.querySelector('input[name=organization]');
-const address = document.querySelector('input[name=address]');
-const city = document.querySelector('input[name=city]');
-const postcode = document.querySelector('input[name=postcod]');
-const phone = document.querySelector('input[name=phone]');
-const data_d = document.querySelector('input[name=data]');
-const data_t = document.querySelector('input[name=time]');
-const more_info = document.querySelector('input[name=more_info]');
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const formData = new FormData(form);
 
+  const url = form.getAttribute("action");
+  const method = form.getAttribute("method");
 
-formData.append('quantity', bags);
-formData.append('categories', category);
-formData.append('institution', organization);
-formData.append('address', address);
-formData.append('phone_number', phone);
-formData.append('city', city);
-formData.append('zip_code', postcode);
-formData.append('pick_up_date', data_d);
-formData.append('pick_up_time', data_t);
-formData.append('pick_up_comment', more_info);
+  fetch(url, {
+    method: method,
+    body: formData
+  })
+      .then(res => res.json())
+      .then(res => {
+        console.log("Dane wysłane");
+        console.log(res);
+      })
 
 
-fetch('http://127.0.0.1:8000/add_donation/', {
-      method: 'post',
-      headers: {"Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: JSON.stringify(formData)
-    })
-        .then(response => response.json())
-        .then(data => {
-          console.log("Dane wysłane");
-          console.log(data);
-        })
-        .catch(error => {
-          console.log(error);
-        })
+});
+
+
+
+
+
+
+
+// const category = document.querySelector('input[name=categories]');
+// const bags = document.querySelector('input[name=bags]');
+// const organization = document.querySelector('input[name=organization]');
+// const address = document.querySelector('input[name=address]');
+// const city = document.querySelector('input[name=city]');
+// const postcode = document.querySelector('input[name=postcod]');
+// const phone = document.querySelector('input[name=phone]');
+// const data_d = document.querySelector('input[name=data]');
+// const data_t = document.querySelector('input[name=time]');
+// const more_info = document.querySelector('input[name=more_info]');
+
+
+// formData.append('quantity', bags);
+// formData.append('categories', category);
+// formData.append('institution', organization);
+// formData.append('address', address);
+// formData.append('phone_number', phone);
+// formData.append('city', city);
+// formData.append('zip_code', postcode);
+// formData.append('pick_up_date', data_d);
+// formData.append('pick_up_time', data_t);
+// formData.append('pick_up_comment', more_info);
+
+
+// fetch('http://127.0.0.1:8000/add_donation/', {
+//       method: 'post',
+//       headers: {"Content-Type": "application/x-www-form-urlencoded"
+//       },
+//       body: JSON.stringify(formData)
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//           console.log("Dane wysłane");
+//           console.log(data);
+//         })
+//         .catch(error => {
+//           console.log(error);
+//         })
