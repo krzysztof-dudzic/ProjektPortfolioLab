@@ -16,15 +16,15 @@
     <section id="stats" class="stats">
       <div class="container container--85">
         <div class="stats--item">
-          <em>10</em>
+          <em>{{ count_bags }}</em>
           <h3>Oddanych worków</h3>
-          <p>{{ count_bags }}</p>
+          <p></p>
         </div>
 
         <div class="stats--item">
-          <em>5</em>
+          <em>{{ count_institutions }}</em>
           <h3>Wspartych organizacji</h3>
-          <h1>{{ count_institutions }}</h1>
+          <h1></h1>
         </div>
 
       </div>
@@ -87,10 +87,12 @@
             <div class="col">
 
               <div class="title">{{ institution.istitution_name }}</div>
-              <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
+                <!--
+              <div class="subtitle">{{ institution.type }}</div>
+              -->
             </div>
 
-            <div class="col"><div class="text">ubrania, jedzenie, sprzęt AGD, meble, zabawki</div></div>
+            <div class="col"><div class="text">{{ institution.description}}</div></div>
           </li>
 
             {% endfor %}
@@ -101,7 +103,9 @@
           <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
           <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
         </ul>
+
         -->
+
       </div>
 
 
@@ -115,12 +119,13 @@
           {% for institution in all_institution_org %}
           <li>
             <div class="col">
-
+                <!--
               <div class="title">{{ institution.istitution_name }}</div>
+              -->
               <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
             </div>
 
-            <div class="col"><div class="text">ubrania, jedzenie, sprzęt AGD, meble, zabawki</div></div>
+            <div class="col"><div class="text">{{ institution.description}}</div></div>
           </li>
 
             {% endfor %}

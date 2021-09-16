@@ -132,7 +132,7 @@ DEFAULT_AUTO_FIELD = 'django.db.modelsautoField'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-#
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+
+]

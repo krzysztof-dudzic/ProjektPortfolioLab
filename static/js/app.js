@@ -1,3 +1,5 @@
+
+
 document.addEventListener("DOMContentLoaded", function() {
   /**
    * HomePage - Help section
@@ -140,6 +142,9 @@ document.addEventListener("DOMContentLoaded", function() {
     new FormSelect(el);
   });
 
+
+
+
   /**
    * Hide elements when clicked on document
    */
@@ -161,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
       el.classList.remove("selecting");
     });
   });
+
 
   /**
    * Switching between form steps
@@ -237,6 +243,12 @@ document.addEventListener("DOMContentLoaded", function() {
       // TODO: get data from inputs and show them in summary
     }
 
+
+
+
+
+
+
     /**
      * Submit form
      *
@@ -246,10 +258,94 @@ document.addEventListener("DOMContentLoaded", function() {
       e.preventDefault();
       this.currentStep++;
       this.updateForm();
+
     }
   }
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);
   }
+
+
+// function getSelectedCheckbox(name) {
+//
+//     const instit = document.querySelectorAll('input[name="organization"]');
+//     let values = [];
+//     categ.forEach((cate)  => {
+//       values.push(cate.values);
+//     });
+//     return instit.style.display = "block";
+//   }
+
+  // for (const chk of categ) {
+  //     chk.addEventListener("change", function (e) {
+  //       if (e.checked === true) {
+  //         instit.style.display = "block"
+  //       }
+  //       else {
+  //         instit.style.display = 'none';
+  //       }
+  // })
+  // }
+
+  // const categoria = document.querySelectorAll("input[name=categories]").values;
+  // const res1 = document.getElementsByClassName("icon icon-bag");
+  // for (const chk of categoria) {
+  //   if (chk.checked) {
+  //     res1.innerText = chk.nextSibling.data;
+  //   }
+  // }
+
+
 });
+
+
+
+// for (const categ of categori) {
+//   categ.addEventListener('change', function (event) {
+//     if (event.target.checked === true) {
+//       event.style.display = "none";
+//     }
+//   })
+//   }
+
+
+const formData = new FormData();
+const category = document.querySelector('input[name=categories]');
+const bags = document.querySelector('input[name=bags]');
+const organization = document.querySelector('input[name=organization]');
+const address = document.querySelector('input[name=address]');
+const city = document.querySelector('input[name=city]');
+const postcode = document.querySelector('input[name=postcod]');
+const phone = document.querySelector('input[name=phone]');
+const data_d = document.querySelector('input[name=data]');
+const data_t = document.querySelector('input[name=time]');
+const more_info = document.querySelector('input[name=more_info]');
+
+
+formData.append('quantity', bags);
+formData.append('categories', category);
+formData.append('institution', organization);
+formData.append('address', address);
+formData.append('phone_number', phone);
+formData.append('city', city);
+formData.append('zip_code', postcode);
+formData.append('pick_up_date', data_d);
+formData.append('pick_up_time', data_t);
+formData.append('pick_up_comment', more_info);
+
+
+fetch('http://127.0.0.1:8000/add_donation/', {
+      method: 'post',
+      headers: {"Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: JSON.stringify(formData)
+    })
+        .then(response => response.json())
+        .then(data => {
+          console.log("Dane wysłane");
+          console.log(data);
+        })
+        .catch(error => {
+          console.log(error);
+        })

@@ -40,9 +40,11 @@ class RegisterView(View):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            # form.clean_password2()
-
-            # email = form.cleaned_data['email']
+            # instance = form.save(commit=False)
+            # instance.set_password(instance.password)
+            # # form.clean_password2()
+            # instance.save()
+            # # email = form.cleaned_data['email']
             # raw_password = form.cleaned_data['password']
             # user = authenticate(email=email, password=raw_password)
             # user.save()

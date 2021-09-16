@@ -12,19 +12,25 @@ User = settings.AUTH_USER_MODEL
 class Category(models.Model):
     name = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.name
 
 INSTITUTIONS = (
-    (1, "Fundacja"),
-    (2, "Organizacja pozarządowa"),
-    (3, "Zbiórka lokalna"),
+    ('1', "Fundacja"),
+    ('2', "Organizacja pozarządowa"),
+    ('3', "Zbiórka lokalna"),
 )
 
 
 class Institution(models.Model):
+
     istitution_name = models.CharField(max_length=128)
     description = models.TextField()
-    type = models.TextField(choices=INSTITUTIONS, default="Fundacja")
+    type = models.CharField(max_length=2, choices=INSTITUTIONS, default='1')
     categories = models.ManyToManyField(Category)
+
+    def __str__(self):
+        return self.istitution_name
 
 
 class Donation(models.Model):
@@ -35,8 +41,8 @@ class Donation(models.Model):
     phone_number = models.CharField(max_length=12)
     city = models.CharField(max_length=64)
     zip_code = models.TextField()
-    pick_up_date = models.DateTimeField(datetime.date)
-    pick_up_time = models.IntegerField()
+    pick_up_date = models.DateField()
+    pick_up_time = models.TimeField(default=datetime.time)
     pick_up_comment = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

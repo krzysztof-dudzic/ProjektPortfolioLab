@@ -107,7 +107,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('email',)
+        fields = ('first_name', 'last_name', 'email', )
 
 
 class CustomUserChangeForm(UserChangeForm):
@@ -142,3 +142,5 @@ class CreateUserForm(forms.ModelForm):
         pas2 = clean_data['password2']
         if pas1 != pas2:
             raise ValidationError('Passwords are incorrect')
+
+
